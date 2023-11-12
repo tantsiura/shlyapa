@@ -13,7 +13,7 @@ class Tag(Enum):
 @app.post('/a', 
           tags=[Tag.IMMUTABLE],
           summary="Первая функция", 
-          description="Описание для эндпоинта a."
+          response_description="Описание для эндпоинта a."
         )
 def a() -> str:
     """
@@ -26,7 +26,8 @@ def a() -> str:
         '/b', 
         tags=[Tag.MUTABLE], 
         summary="Вторая функция",
-        description="Описание для эндпоинта b."
+        description="Описание для эндпоинта b.",
+        response_description="Вот это ответ!"
     )
 def b() -> List[str]:
     """
@@ -39,7 +40,7 @@ def b() -> List[str]:
         '/c', 
         tags=[Tag.IMMUTABLE], 
         summary="Третья функция",
-        description="Описание для эндпоинта c."
+        response_description="Вот это ответ!"
     )
 def c() -> int:
     """
@@ -51,8 +52,7 @@ def c() -> int:
 @app.get(
         '/d', 
         tags=[Tag.IMMUTABLE], 
-        summary="Четвертая функция", 
-        description="Описание для эндпоинта d."
+        summary="Четвертая функция",
     )
 def d() -> Dict[str, str]:
     """
