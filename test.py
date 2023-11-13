@@ -1,50 +1,43 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from enum import Enum
-from typing import List, Dict
 
 app = FastAPI()
 
 
-class Tag(Enum):
-    IMMUTABLE = 'IMMUTABLE'
-    MUTABLE = 'MUTABLE'
+class Tag(str, Enum):
+    IMMUTABLE = 'immutable'
+    MUTABLE = 'mutable'
 
 
 @app.post('/a', 
           tags=[Tag.IMMUTABLE],
           summary="Первая функция", 
-          response_description="Описание для эндпоинта a."
-        )
+          responses={200:{"description": "Возвращает строку"}},
+          description="POST запрос, возвращающий строку.")
 def a() -> str:
     """
-    Описание функции a.
+    Описание функции POST /a.
     """
     return 'Вот это ответ!'
 
 
 @app.get(
-        '/b', 
-        tags=[Tag.MUTABLE], 
-        summary="Вторая функция",
-        description="Описание для эндпоинта b.",
-        response_description="Вот это ответ!"
-    )
-def b() -> List[str]:
-    """
-    Описание функции b.
-    """
+    '/b',
+    tags=[Tag.MUTABLE],
+    description='Функция возвращает список.',
+    summary='Вторая функция')
+def b() -> list[str]:
     return ['Вот', 'это', 'ответ!']
-
 
 @app.post(
         '/c', 
         tags=[Tag.IMMUTABLE], 
         summary="Третья функция",
-        response_description="Вот это ответ!"
-    )
+        responses={200:{"description": "Возвращает целое число"}},
+    description="POST запрос, возвращающий число.")
 def c() -> int:
     """
-    Описание функции c.
+    Описание функции POST /c.
     """
     return 42
 
@@ -52,10 +45,7 @@ def c() -> int:
 @app.get(
         '/d', 
         tags=[Tag.IMMUTABLE], 
-        summary="Четвертая функция",
-    )
-def d() -> Dict[str, str]:
-    """
-    Описание функции d.
-    """
+        summary="Четвертая функция", 
+    description="GET запрос, возвращающий словарь.")
+def d() -> dict[str, str]:
     return {'Вот': 'это ответ!'}
